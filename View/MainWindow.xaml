@@ -1,0 +1,20 @@
+﻿<Window x:Class="MovieStation.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:MovieStation"
+        xmlns:vsm="clr-namespace:System.Windows;assembly=PresentationFramework"
+        Title="Movie Station v0.1" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" d:DesignHeight="687" d:DesignWidth="1512"
+        Drop="FileDropped" AllowDrop="True"
+        MinWidth="1000" MinHeight="700">
+    <DockPanel>
+        <local:Header DockPanel.Dock="Top" BorderBrush="Gray" BorderThickness="0,0,0,2" />
+        <local:SearchStation DockPanel.Dock="Bottom" BorderBrush="Gray" BorderThickness="0,2,0,0" />
+        <ScrollViewer DockPanel.Dock="Right"  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <local:InfoStation BorderBrush="Gray" DataContext="{Binding SelectedMovie}" BorderThickness="2,0,0,0" />
+        </ScrollViewer>
+        <Grid>
+            <ListBox HorizontalContentAlignment="Stretch" ItemsSource="{Binding Path=mdc.Movies}" SelectedItem="{Binding SelectedMovie}" BorderThickness="0" />
+            <local:LoadingWait Visibility="{Binding Path=mdc.updatingData, Converter={StaticResource BoolToVisConverter}}" />
+        </Grid>
+    </DockPanel>
+</Window>

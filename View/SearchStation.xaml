@@ -1,0 +1,83 @@
+﻿<UserControl x:Class="MovieStation.SearchStation"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MovieStation"
+             mc:Ignorable="d" 
+             Height="50" d:DesignWidth="976"
+             MouseLeftButtonDown="Control_MouseDown" Background="White" IsHitTestVisible="True" Focusable="True" Name="back">
+
+    <Canvas>
+        <local:ChooseStars Rating="{Binding Path=mdc.FilterMinRating, FallbackValue=9.9, Mode=TwoWay}" Canvas.Left="298" Canvas.Top="8" />
+        <Label Canvas.Left="12" Canvas.Top="12" Content="Search:" />
+        <TextBox Canvas.Left="65" Canvas.Top="14" Width="120" Text="{Binding Path=mdc.FilterText, UpdateSourceTrigger=PropertyChanged}" />
+        <CheckBox IsChecked="{Binding Path=mdc.ExactMatch}" Content="Exact Match" Canvas.Left="205" Canvas.Top="17" />
+        <CheckBox IsChecked="{Binding mdc.Hd}" Canvas.Left="853" Canvas.Top="17" Content="HD" />
+        <ComboBox Canvas.Left="712" Canvas.Top="13" Width="120" SelectedIndex="{Binding mdc.SelectedLanguage}">
+            <ComboBoxItem>Movie Language</ComboBoxItem>
+            <ComboBoxItem>English</ComboBoxItem>
+            <ComboBoxItem>Deutsch</ComboBoxItem>
+        </ComboBox>
+        <Button Content="Reset" Canvas.Left="911" Canvas.Top="13" Padding="1" Command="{Binding Path=mdc.Reset}" CommandParameter="{Binding}" />
+        <ListBox Canvas.Left="573" Canvas.Top="13" Width="120">
+
+            <ListBox.Template>
+                <ControlTemplate TargetType="ListBox">
+                    <Grid>
+                        <Border Name="Border" BorderBrush="Gray" Background="Transparent" BorderThickness="1" Padding="3" CornerRadius="4">
+                            <TextBlock Text="Genre" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                <!--<ContentPresenter />-->
+                        </Border>
+
+                        <Popup Name="test" IsOpen="False" Placement="Center" PopupAnimation="Fade" AllowsTransparency="True">
+                            <Border BorderBrush="Black" BorderThickness="3" CornerRadius="10">
+                                <Grid>
+                                    <Border Name="mask" Background="White" CornerRadius="10" BorderThickness="3" />
+                                    <ItemsControl Background="White" ItemsSource="{Binding Path=mdc.Genres}" DisplayMemberPath="Name">
+                                        <ItemsControl.OpacityMask>
+                                            <VisualBrush Visual="{Binding ElementName=mask}"/>
+
+                                        </ItemsControl.OpacityMask>
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <UniformGrid Columns="5" Rows="5" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <ToggleButton Content="{Binding Name}" IsChecked="{Binding enabled}">
+                                                    <ToggleButton.Template>
+                                                        <ControlTemplate TargetType="ToggleButton">
+                                                            <Border Background="White" Name="ToggleBorder" BorderBrush="Gray" BorderThickness="1">
+                                                                <ContentPresenter Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                                            </Border>
+                                                            <ControlTemplate.Triggers>
+                                                                <Trigger Property="IsChecked" Value="True">
+                                                                    <Setter TargetName="ToggleBorder" Property="Background" Value="#eeeeaa" />
+                                                                </Trigger>
+                                                            </ControlTemplate.Triggers>
+                                                        </ControlTemplate>
+                                                    </ToggleButton.Template>
+                                                </ToggleButton>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+
+                                    </ItemsControl>
+                                </Grid>
+
+                            </Border>
+                        </Popup>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="test" Property="IsOpen" Value="True" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </ListBox.Template>
+        </ListBox>
+
+    </Canvas>
+
+</UserControl>

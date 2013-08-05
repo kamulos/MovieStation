@@ -1,0 +1,28 @@
+﻿<UserControl x:Class="MovieStation.InfoStation"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MovieStation"
+             mc:Ignorable="d" 
+             Width="507" d:DesignHeight="612" xmlns:my="clr-namespace:MovieStation">
+    <Canvas>
+        <Image Source="/MovieStation;component/Images/hd.png" Visibility="{Binding Path=Hd, Converter={StaticResource BoolToVisConverter}}" Canvas.Left="55" Canvas.Top="84" Height="16" Width="50" />
+        <Image Source="{Binding Languages, Converter={StaticResource languageConverter}}" Canvas.Left="17" Canvas.Top="84" Height="16" Width="50" />
+        <local:CachedStars Rating="{Binding Path=Rating}" Canvas.Left="25" Canvas.Top="47" />
+        <!--<my:Stars RatingValue="{Binding Path=Rating, FallbackValue=0.01}" Canvas.Left="25" Canvas.Top="47" />-->
+        <Image Height="230" Width="180" Canvas.Left="40" Canvas.Top="120" Source="{Binding Path=Poster, FallbackValue={StaticResource pEmpty}, TargetNullValue={StaticResource pEmpty}}" />
+        <TextBlock Padding="5" Text="{Binding Path=Title, FallbackValue='Movie'}" FontSize="20" FontWeight="SemiBold" Canvas.Left="12" Canvas.Top="12" MaxWidth="483" TextTrimming="WordEllipsis" />
+        <Label Content="Release date" Canvas.Left="40" Canvas.Top="438" FontSize="11.5" />
+        <Label Canvas.Left="283" Canvas.Top="140" Content="{Binding Path=Directors[0]}" FontSize="15" FontWeight="SemiBold" />
+        <Label Canvas.Left="68" Canvas.Top="398" Content="Genres" FontSize="11.5" />
+        <Label Canvas.Left="266" Canvas.Top="188" Content="Cast" FontSize="11.5" />
+        <Label Canvas.Left="299" Canvas.Top="438" Content="Runtime" FontSize="11.5" />
+        <TextBlock Width="135" Canvas.Left="299" Canvas.Top="217" Height="133" FontWeight="SemiBold" Text="{Binding Path=Cast, Converter={StaticResource listConverter}, ConverterParameter=nl}" TextWrapping="Wrap" />
+        <TextBlock Canvas.Left="40" Canvas.Top="497" Height="92" Text="{Binding Path=Plot}" Width="432" TextWrapping="Wrap" FontSize="11.5" />
+        <Label Canvas.Left="266" Canvas.Top="120" Content="Director" FontSize="11.5" />
+        <Label Canvas.Left="118" Canvas.Top="438" Content="{Binding Path=ReleaseDate}" FontSize="12" FontWeight="SemiBold" />
+        <Label Canvas.Left="357" Canvas.Top="439" Content="{Binding Path=Runtime, Converter={StaticResource minConverter}}" FontSize="12" FontWeight="SemiBold" />
+        <Label Canvas.Left="118" Canvas.Top="398" FontSize="12" FontWeight="SemiBold" Content="{Binding Path=Genres, Converter={StaticResource listConverter}}" />
+    </Canvas>
+</UserControl>
