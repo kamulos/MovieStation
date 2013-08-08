@@ -13,7 +13,11 @@
             <local:InfoStation BorderBrush="Gray" DataContext="{Binding SelectedMovie}" BorderThickness="2,0,0,0" />
         </ScrollViewer>
         <Grid>
-            <ListBox HorizontalContentAlignment="Stretch" ItemsSource="{Binding Path=mdc.Movies}" SelectedItem="{Binding SelectedMovie}" BorderThickness="0" />
+            <ListBox HorizontalContentAlignment="Stretch" ItemsSource="{Binding Path=mdc.Movies}" SelectedItem="{Binding SelectedMovie}" BorderThickness="0">
+                <ListBox.InputBindings>
+                    <KeyBinding Key="Delete" Command="{Binding DeleteMovie}" />
+                </ListBox.InputBindings>
+            </ListBox>
             <local:LoadingWait Visibility="{Binding Path=mdc.updatingData, Converter={StaticResource BoolToVisConverter}}" />
         </Grid>
     </DockPanel>

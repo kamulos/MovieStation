@@ -218,6 +218,15 @@ class MovieDatabase // TODO: implement IDisposable
         command.ExecuteNonQuery();
     }
 
+    public void delete(Movie movie) // TODO: als Parameter oder escapen?
+    {
+        SQLiteCommand command = new SQLiteCommand(m_dbConnection);
+
+        command.CommandText = "DELETE FROM movies WHERE id='" + movie.Id + "'";
+
+        command.ExecuteNonQuery();
+    }
+
     public void close()
     {
         m_dbConnection.Close();

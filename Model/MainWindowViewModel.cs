@@ -424,6 +424,33 @@ class MainWindowViewModel : INotifyPropertyChanged
         }
     }
 
+    private ICommand _deleteMovie;
+    public ICommand DeleteMovie
+    {
+        get
+        {
+            if (_deleteMovie == null)
+            {
+                _deleteMovie = new RelayCommand(
+                    p => deleteSelected(),
+                    p => true);
+            }
+            return _deleteMovie;
+        }
+    }
+
+    private void deleteSelected()
+    {
+        if (SelectedMovie != null)
+        {
+            if (MessageBox.Show("Do you want to delete the movie \"" + SelectedMovie.Title + "\" from your collection?", "Delete Movie?", MessageBoxButton.OKCancel, MessageBoxImage.Question, MessageBoxResult.OK) == MessageBoxResult.OK)
+            {
+                mdc.mdb.delete(SelectedMovie);
+                mdc.updateData();
+            }
+        }
+    }
+
     private ICommand _play;
     public ICommand Play
     {
