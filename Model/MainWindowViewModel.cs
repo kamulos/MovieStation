@@ -7,13 +7,15 @@ using MovieStation;
 using System.Windows;
 using System.Windows.Input;
 using System.Diagnostics;
+using System.Collections.Concurrent;
+using System.Threading;
 
 
 
 class MainWindowViewModel : INotifyPropertyChanged
 {
 
-    public MovieDataConnection mdc{get;private set;}
+    public MovieDataConnection mdc { get; private set; }
 
     public MainWindowViewModel()
     {
@@ -29,16 +31,50 @@ class MainWindowViewModel : INotifyPropertyChanged
 
     public void AddFiles(IEnumerable<string> fileNames, Window mainWindow)
     {
-        foreach (string file in fileNames)
+        lock (filesToAdd)
         {
-            ChosenMovie = null;
-            CurrentPath = file;
+            foreach (string file in fileNames)
+            {
+                filesToAdd.Enqueue(file);
 
-            mf = new MovieFinder();
-            mf.Owner = mainWindow;
-            mf.DataContext = mainWindow.DataContext;
-            mf.ShowDialog();
+                if (faThread == null || !faThread.IsAlive)
+                {
+                    faThread = new Thread(AddFilesThread);
+                    faThread.Start(mainWindow);
+                }
+            }
         }
+    }
+
+    Queue<string> filesToAdd = new Queue<string>();
+    private Thread faThread;
+
+    private void AddFilesThread(object d)
+    {
+        Window mainWindow = d as Window;
+
+        while(filesToAdd.Count > 0)
+        {
+            lock (filesToAdd)
+            {
+                CurrentPath = filesToAdd.Dequeue();
+            }
+
+            ChosenMovie = null;
+
+            if (Application.Current != null)
+            {
+                Application.Current.Dispatcher.Invoke(new Action(() => showMovieFinder(mainWindow)));
+            }
+        }
+    }
+
+    void showMovieFinder(Window mainWindow)
+    {
+        mf = new MovieFinder();
+        mf.Owner = mainWindow;
+        mf.DataContext = mainWindow.DataContext;
+        mf.ShowDialog();
     }
 
     private string _currentPath;
