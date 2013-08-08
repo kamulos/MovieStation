@@ -55,7 +55,7 @@ class MainWindowViewModel : INotifyPropertyChanged
     {
         Window mainWindow = d as Window;
 
-        while(filesToAdd.Count > 0)
+        while (filesToAdd.Count > 0)
         {
             lock (filesToAdd)
             {
@@ -247,6 +247,26 @@ class MainWindowViewModel : INotifyPropertyChanged
         }
     }
 
+    private ICommand _goIMDb;
+    public ICommand GoIMDb
+    {
+        get
+        {
+            if (_goIMDb == null)
+            {
+                _goIMDb = new RelayCommand(
+                    p => openIMDbPage(),
+                    p => true);
+            }
+            return _goIMDb;
+        }
+    }
+
+    private void openIMDbPage()
+    {
+        Process.Start(@"http://www.imdb.com/title/" + SelectedMovie.Id + @"/");
+    }
+
     private ICommand _play;
     public ICommand Play
     {
@@ -266,7 +286,21 @@ class MainWindowViewModel : INotifyPropertyChanged
     {
         if (!string.IsNullOrEmpty(SelectedMovie.Path))
         {
-            Process.Start(SelectedMovie.Path);
+            if (!File.Exists(SelectedMovie.Path))
+            {
+                MessageBox.Show("Could not find the file \"" + SelectedMovie.Path + "\"");
+            }
+            else
+            {
+                try
+                {
+                    Process.Start(SelectedMovie.Path);
+                }
+                catch (Win32Exception e)
+                {
+                    MessageBox.Show("Could not start movie :(");
+                }
+            }
         }
     }
 

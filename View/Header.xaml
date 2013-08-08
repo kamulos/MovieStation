@@ -10,5 +10,6 @@
         <ComboBox Width="83" Canvas.Right="507" Canvas.Top="6" ItemsSource="{Binding Path=mdc.OrderBy}" DisplayMemberPath="[0]" SelectedIndex="{Binding Path=mdc.SelectedOrder}" />
         <Label Canvas.Left="78" Content="{Binding Path=mdc.numberOfMovies, Converter={StaticResource bracketConverter}}" FontSize="20" FontWeight="SemiBold" />
         <Button Content="▶ Watch Movie" IsEnabled="{Binding SelectedMovie, TargetNullValue=False}" Command="{Binding Play}" Height="24" Canvas.Top="6" Width="188" Canvas.Right="10" />
+        <Button Content="Go to IMDb" IsEnabled="{Binding SelectedMovie, TargetNullValue=False}" Command="{Binding GoIMDb}" Height="24" Canvas.Top="6" Width="188" Canvas.Right="220" />
     </Canvas>
 </UserControl>
