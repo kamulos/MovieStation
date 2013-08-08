@@ -7,11 +7,15 @@
         x:Name="Finder">
     <Canvas>
         <local:InfoStation Canvas.Left="425" Canvas.Top="80" DataContext="{Binding ChosenMovie}" />
-        <Button Content="OK" IsDefault="True" IsEnabled="{Binding ChosenMovie, TargetNullValue=False}" Command="{Binding AddMovie}" Canvas.Left="32" Canvas.Top="632" Width="287" />
+        <Button x:Name="OKButton" Content="OK" IsDefault="True" IsEnabled="{Binding ChosenMovie, TargetNullValue=False}" Command="{Binding AddMovie}" Canvas.Left="32" Canvas.Top="632" Width="287" />
         <Button Content="Abbrechen" IsCancel="True" Canvas.Left="32" Canvas.Top="683" Width="287" />
+        <!-- TODO: eigenes element erstellen eventuell focus verlieren wenn film ausgewählt, damit enter key ok klickt -->
         <GroupBox Header="Search by Name" Height="108" Canvas.Left="32" Canvas.Top="80" Width="287">
             <Canvas>
-                <TextBox Text="{Binding TitleText}" Width="259" Canvas.Left="10" Canvas.Top="14">
+                <TextBox Text="{Binding TitleText, UpdateSourceTrigger=PropertyChanged}" Width="259" Canvas.Left="10" Canvas.Top="14">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter" Command="{Binding Command, ElementName=SearchButton}" CommandParameter="{Binding CommandParameter, ElementName=SearchButton}" />
+                    </TextBox.InputBindings>
                     <TextBox.Style>
                         <Style xmlns:sys="clr-namespace:System;assembly=mscorlib" TargetType="{x:Type TextBox}">
                             <Style.Resources>
@@ -35,7 +39,10 @@
                         </Style>
                     </TextBox.Style>
                 </TextBox>
-                <TextBox Text="{Binding YearText}" Width="98" Canvas.Left="10" Canvas.Top="50">
+                <TextBox Text="{Binding YearText, UpdateSourceTrigger=PropertyChanged}" Width="98" Canvas.Left="10" Canvas.Top="50">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter" Command="{Binding Command, ElementName=SearchButton}" CommandParameter="{Binding CommandParameter, ElementName=SearchButton}" />
+                    </TextBox.InputBindings>
                     <TextBox.Style>
                         <Style xmlns:sys="clr-namespace:System;assembly=mscorlib" TargetType="{x:Type TextBox}">
                             <Style.Resources>
@@ -59,13 +66,16 @@
                         </Style>
                     </TextBox.Style>
                 </TextBox>
-                <Button Content="search" Canvas.Left="196" Canvas.Top="50" Width="73" Command="{Binding Search}" CommandParameter="{Binding ElementName=Finder}" />
+                <Button x:Name="SearchButton" Content="search" Canvas.Left="196" Canvas.Top="50" Width="73" Command="{Binding Search}" CommandParameter="{Binding ElementName=Finder}" />
 
             </Canvas>
         </GroupBox>
         <GroupBox Header="Search by IMDb ID" Height="67" Canvas.Left="32" Canvas.Top="256" Width="287">
             <Canvas>
-                <TextBox Text="{Binding IdText}" Width="162" Canvas.Left="10" Canvas.Top="10">
+                <TextBox Text="{Binding IdText, UpdateSourceTrigger=PropertyChanged}" Width="162" Canvas.Left="10" Canvas.Top="10">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter" Command="{Binding Command, ElementName=IDSearchButton}" CommandParameter="{Binding CommandParameter, ElementName=IDSearchButton}" />
+                    </TextBox.InputBindings>
                     <TextBox.Style>
                         <Style xmlns:sys="clr-namespace:System;assembly=mscorlib" TargetType="{x:Type TextBox}">
                             <Style.Resources>
@@ -89,7 +99,7 @@
                         </Style>
                     </TextBox.Style>
                 </TextBox>
-                <Button Content="search" Canvas.Left="192" Canvas.Top="10" Width="73" Command="{Binding SearchById}" />
+                <Button x:Name="IDSearchButton" Content="search" Canvas.Left="192" Canvas.Top="10" Width="73" Command="{Binding SearchById}" />
 
             </Canvas>
         </GroupBox>
