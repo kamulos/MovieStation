@@ -62,6 +62,10 @@ class MainWindowViewModel : INotifyPropertyChanged
 
             ChosenMovie = null;
 
+            IdText = null;
+            TitleText = null;
+            YearText = null;
+
             if (Application.Current != null)
             {
                 Application.Current.Dispatcher.Invoke(new Action(() => showMovieFinder(mainWindow)));
