@@ -28,5 +28,11 @@ namespace MovieStation
             DialogResult = true;
             Close();
         }
+
+        private void ResultList_MouseDoubleClick(object sender, MouseButtonEventArgs e) // TODO: only for items?
+        {
+            DialogResult = true;
+            Close();
+        }
     }
 }

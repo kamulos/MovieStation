@@ -4,7 +4,7 @@
         Title="SearchResults" Height="584" Width="709"
         ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
     <Canvas>
-        <ListBox x:Name="ResultList" ItemsSource="{Binding MovieChoice}" SelectedItem="{Binding ChosenMovie}" BorderThickness="0" Height="500" Width="681" Canvas.Left="10" Canvas.Top="10" />
+        <ListBox x:Name="ResultList" MouseDoubleClick="ResultList_MouseDoubleClick" ItemsSource="{Binding MovieChoice}" SelectedItem="{Binding ChosenMovie}" BorderThickness="0" Height="500" Width="681" Canvas.Left="10" Canvas.Top="10" />
         <Button Content="OK" IsDefault="True" Click="OK_Click" Canvas.Left="97" Canvas.Top="515" Height="29" Width="226" />
         <Button Content="Cancel" IsCancel="True" Canvas.Left="415" Canvas.Top="515" Height="29" Width="226" />
     </Canvas>
