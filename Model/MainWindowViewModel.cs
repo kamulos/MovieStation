@@ -9,6 +9,8 @@ using System.Windows.Input;
 using System.Diagnostics;
 using System.Collections.Concurrent;
 using System.Threading;
+using System.IO;
+using System.Text.RegularExpressions;
 
 
 
@@ -63,7 +65,7 @@ class MainWindowViewModel : INotifyPropertyChanged
             ChosenMovie = null;
 
             IdText = null;
-            TitleText = null;
+            TitleText = detectTitleFromFile(CurrentPath);
             YearText = null;
 
             if (Application.Current != null)
@@ -71,6 +73,11 @@ class MainWindowViewModel : INotifyPropertyChanged
                 Application.Current.Dispatcher.Invoke(new Action(() => showMovieFinder(mainWindow)));
             }
         }
+    }
+
+    string detectTitleFromFile(string file)
+    {
+        return Regex.Replace(Path.GetFileNameWithoutExtension(file), @"[^A-Za-z0-9]+", " ");
     }
 
     void showMovieFinder(Window mainWindow)
