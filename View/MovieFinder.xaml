@@ -6,7 +6,10 @@
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         x:Name="Finder">
     <Canvas>
-        <local:InfoStation Canvas.Left="425" Canvas.Top="80" DataContext="{Binding ChosenMovie}" />
+        <Grid Canvas.Left="425" Canvas.Top="80">
+            <local:InfoStation DataContext="{Binding ChosenMovie}" />
+            <local:LoadingWait Visibility="{Binding Path=Searching, Converter={StaticResource BoolToVisConverter}}" />
+        </Grid>
         <Button x:Name="OKButton" Content="OK" IsDefault="True" IsEnabled="{Binding ChosenMovie, TargetNullValue=False}" Command="{Binding AddMovie}" Canvas.Left="32" Canvas.Top="632" Width="287" />
         <Button Content="Abbrechen" IsCancel="True" Canvas.Left="32" Canvas.Top="683" Width="287" />
         <!-- TODO: eigenes element erstellen eventuell focus verlieren wenn film ausgewählt, damit enter key ok klickt -->

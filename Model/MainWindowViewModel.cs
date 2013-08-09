@@ -24,8 +24,6 @@ class MainWindowViewModel : INotifyPropertyChanged
         MovieChoice = new List<Movie>();
         mdc = new MovieDataConnection();
 
-        Search = new SearchCommand(this);
-
         return;
     }
 
@@ -143,52 +141,90 @@ class MainWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    public class SearchCommand : ICommand
+    public bool _searching;
+    public bool Searching
     {
-        MainWindowViewModel _mwvm;
-
-        public SearchCommand(MainWindowViewModel mwvm)
+        get { return _searching; }
+        set
         {
-            _mwvm = mwvm;
-        }
-
-        public bool CanExecute(object parameter) { return true; }
-        public event EventHandler CanExecuteChanged;
-        public void Execute(object parameter)
-        {
-            _mwvm.MovieChoice = IMDb.SearchMovie(_mwvm.TitleText, _mwvm.YearText);
-
-            if (_mwvm.MovieChoice != null && _mwvm.MovieChoice.Count() != 0)
-            {
-                if (_mwvm.MovieChoice.Count() == 1)
-                {
-                    _mwvm.ChosenMovie = _mwvm.MovieChoice.First();
-                }
-                else
-                {
-                    _mwvm.ChosenMovie = _mwvm.MovieChoice.First();
-
-                    SearchResults sr = new SearchResults();
-                    MovieFinder mf = (MovieFinder)parameter;
-                    sr.Owner = mf;
-                    sr.DataContext = mf.DataContext;
-                    bool? res = sr.ShowDialog();
-                    if (!res.HasValue || res == false)
-                    {
-                        _mwvm.ChosenMovie = null;
-                    }
-                }
-            }
-            else
-            {
-                _mwvm.ChosenMovie = null;
-            }
+            _searching = value;
+            if (null != PropertyChanged)
+                PropertyChanged(this, new PropertyChangedEventArgs("Searching"));
         }
     }
 
 
-    public SearchCommand Search { get; private set; }
+    private ICommand _search;
+    public ICommand Search
+    {
+        get
+        {
+            if (_search == null)
+            {
+                _search = new RelayCommand(
+                    p => SearchMovie(),
+                    p => true);
+            }
+            return _search;
+        }
+    }
 
+    private Thread searchThread;
+
+
+    private void SearchMovie()
+    {
+        Searching = true;
+
+        if (searchThread != null)
+        {
+            if (searchThread.IsAlive)
+            {
+                searchThread.Abort();
+            }
+        }
+
+        searchThread = new Thread(SearchMovieThread);
+        searchThread.Start();
+    }
+
+    private void SearchMovieThread()
+    {
+        IEnumerable<Movie> results = IMDb.SearchMovie(TitleText, YearText);
+
+        Searching = false;
+
+        if (Application.Current != null)
+        {
+            Application.Current.Dispatcher.Invoke(new Action(() => showSearchResults(results)));
+        }
+    }
+
+    private void showSearchResults(IEnumerable<Movie> results)
+    {
+        MovieChoice = results;
+
+        if (MovieChoice != null && MovieChoice.Count() != 0)
+        {
+            ChosenMovie = MovieChoice.First();
+            if (MovieChoice.Count() > 1)
+            {
+
+                SearchResults sr = new SearchResults();
+                sr.Owner = mf;
+                sr.DataContext = mf.DataContext;
+                bool? res = sr.ShowDialog();
+                if (!res.HasValue || res == false)
+                {
+                    ChosenMovie = null;
+                }
+            }
+        }
+        else
+        {
+            ChosenMovie = null;
+        }
+    }
 
     private ICommand _searchById;
     public ICommand SearchById
@@ -198,12 +234,42 @@ class MainWindowViewModel : INotifyPropertyChanged
             if (_searchById == null)
             {
                 _searchById = new RelayCommand(
-                    p => ChosenMovie = IMDb.GetMovieByID(IdText),
+                    p => SearchByID(),
                     p => true);
             }
             return _searchById;
         }
     }
+
+
+    private void SearchByID()
+    {
+        Searching = true;
+
+        if (searchThread != null)
+        {
+            if (searchThread.IsAlive) // TODO: vermtutlich gar nicht nötig
+            {
+                searchThread.Abort();
+            }
+        }
+
+        searchThread = new Thread(SearchByIDThread);
+        searchThread.Start();
+    }
+
+    private void SearchByIDThread()
+    {
+        Movie m = IMDb.GetMovieByID(IdText);
+
+        Searching = false;
+
+        if (Application.Current != null)
+        {
+            Application.Current.Dispatcher.Invoke(new Action(() => ChosenMovie = m));
+        }
+    }
+
 
     private ICommand _addMovie;
     public ICommand AddMovie
