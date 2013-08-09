@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:MovieStation"
         xmlns:vsm="clr-namespace:System.Windows;assembly=PresentationFramework"
-        Title="Movie Station v0.1" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" d:DesignHeight="687" d:DesignWidth="1512"
+        Title="Movie Station v0.2" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" d:DesignHeight="687" d:DesignWidth="1512"
         Drop="FileDropped" AllowDrop="True"
         MinWidth="1000" MinHeight="700">
     <DockPanel>
