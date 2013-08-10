@@ -133,7 +133,11 @@ class MovieDatabase // TODO: implement IDisposable
             m.Cast = reader.GetString(6).Split('|');
             m.ReleaseDate = reader.GetString(7);
             m.Plot = reader.GetString(8);
-            m.CompressedPoster = (byte[])reader.GetValue(9);
+            object cp = reader.GetValue(9);
+            if (cp.GetType() != typeof(System.DBNull))
+            {
+                m.CompressedPoster = cp as byte[];
+            }
             m.Runtime = reader.GetInt32(10);
             m.Path = reader.GetString(11);
 
