@@ -82,11 +82,6 @@ public static class IMDb // TODO: Async!!
             string rt = movieinf["runtime"].Value;
             Match m = Regex.Match(rt, "((\\d+) h)?\\s?((\\d+) min)?");
 
-            foreach (Group mm in m.Groups)
-            {
-                Console.WriteLine(mm.Value);
-            }
-
             int h = 0, min = 0;
             try
             {

@@ -89,6 +89,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\FileRecognizer.cs" />
     <Compile Include="Model\MovieDatabase.cs" />
     <Compile Include="Model\RelayCommand.cs" />
     <Compile Include="View\CachedStars.xaml.cs">

@@ -60,15 +60,27 @@ class MainWindowViewModel : INotifyPropertyChanged
                 CurrentPath = filesToAdd.Dequeue();
             }
 
-            ChosenMovie = null;
-
-            IdText = null;
-            TitleText = detectTitleFromFile(CurrentPath);
-            YearText = null;
-
-            if (Application.Current != null)
+            Movie m = FileRecognizer.recognize(Path.GetFileNameWithoutExtension(CurrentPath));
+            if (m != null)
             {
-                Application.Current.Dispatcher.Invoke(new Action(() => showMovieFinder(mainWindow)));
+                m.Path = CurrentPath;
+
+                // TODO: redundanz (showMovieFinder)
+                mdc.mdb.insert(m); // TODO: check for null? / executable
+                mdc.updateData();
+            }
+            else
+            {
+                ChosenMovie = null;
+
+                IdText = null;
+                TitleText = detectTitleFromFile(CurrentPath);
+                YearText = null;
+
+                if (Application.Current != null)
+                {
+                    Application.Current.Dispatcher.Invoke(new Action(() => showMovieFinder(mainWindow)));
+                }
             }
         }
     }
@@ -84,6 +96,21 @@ class MainWindowViewModel : INotifyPropertyChanged
         mf.Owner = mainWindow;
         mf.DataContext = mainWindow.DataContext;
         mf.ShowDialog();
+
+        if (ChosenMovie != null)            // TODO: zum addmovie command oder den addmoviecommand abschaffen??
+        {
+            string oldfile = CurrentPath;
+            string dir = Path.GetDirectoryName(oldfile);
+            string ext = Path.GetExtension(oldfile);
+
+            ChosenMovie.Path = dir + @"\" + FileRecognizer.memorize(ChosenMovie) + ext;
+
+            File.Move(oldfile, ChosenMovie.Path);
+
+            mdc.mdb.insert(ChosenMovie); // TODO: check for null? / executable
+            mf.Close();
+            mdc.updateData();
+        }
     }
 
     private string _currentPath;
@@ -271,21 +298,6 @@ class MainWindowViewModel : INotifyPropertyChanged
     }
 
 
-    private ICommand _addMovie;
-    public ICommand AddMovie
-    {
-        get
-        {
-            if (_addMovie == null)
-            {
-                _addMovie = new RelayCommand(
-                    p => this.insertMovie(),
-                    p => true);
-            }
-            return _addMovie;
-        }
-    }
-
     private ICommand _deleteMovie;
     public ICommand DeleteMovie
     {
@@ -368,14 +380,6 @@ class MainWindowViewModel : INotifyPropertyChanged
                 }
             }
         }
-    }
-
-    private void insertMovie()
-    {
-        ChosenMovie.Path = CurrentPath;
-        mdc.mdb.insert(ChosenMovie); // TODO: check for null? / executable
-        mf.Close();
-        mdc.updateData();
     }
 
     private IEnumerable<Movie> _movieChoice;
