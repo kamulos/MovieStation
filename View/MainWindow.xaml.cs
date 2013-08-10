@@ -54,5 +54,20 @@ namespace MovieStation
             disp.BeginInvoke(new Action(() => DataContext = mwvm));
         }
 
+
+        // TODO: im codebehind oder command???
+        private void Movies_DoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (mwvm.SelectedMovie != null)
+            {
+                Window edit = new EditProperties();
+                edit.Owner = this;
+                edit.DataContext = DataContext;
+                edit.ShowDialog();
+
+                mwvm.mdc.mdb.update(mwvm.SelectedMovie); // TODO: so?, kein updateData...
+            }
+        }
+
     }
 }

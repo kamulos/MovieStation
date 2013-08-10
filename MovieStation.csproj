@@ -99,6 +99,9 @@
     </Compile>
     <Compile Include="View\Converters\LanguageConverter.cs" />
     <Compile Include="View\Converters\PathConverter.cs" />
+    <Compile Include="View\EditProperties.xaml.cs">
+      <DependentUpon>EditProperties.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\SearchResults.xaml.cs">
       <DependentUpon>SearchResults.xaml</DependentUpon>
     </Compile>
@@ -143,6 +146,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\ChooseStars.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\EditProperties.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

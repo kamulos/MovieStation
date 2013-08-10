@@ -115,7 +115,7 @@
                     <Image Source="/MovieStation;component/Images/en.png" Height="16"/>
                 </CheckBox>
                 <CheckBox IsChecked="{Binding ChosenMovie.Hd}" IsEnabled="{Binding ChosenMovie, TargetNullValue=False}" Canvas.Left="362" Canvas.Top="14">
-                    <Image Source="/MovieStation;component/Images/hd.png" Height="16" RenderTransformOrigin="0.97,0.438"/>
+                    <Image Source="/MovieStation;component/Images/hd.png" Height="16"/>
                 </CheckBox>
             </Canvas>
         </GroupBox>

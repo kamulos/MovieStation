@@ -154,12 +154,36 @@ class MovieDatabase // TODO: implement IDisposable
         return temp;
     }
 
+    public void update(Movie movie) // TODO: make all columns updateable ??
+    {
+        SQLiteCommand command = new SQLiteCommand(m_dbConnection);
+
+        command.CommandText = "UPDATE movies SET path=@path, audiolangs=@audiolangs, hd=@hd WHERE id='" + movie.Id + "'";
+
+        // TODO: redundancy
+        DbParameter path = command.CreateParameter();
+        path.ParameterName = "@path";
+        path.Value = movie.Path;
+        command.Parameters.Add(path);
+        DbParameter audiolangs = command.CreateParameter();
+        audiolangs.ParameterName = "@audiolangs";
+        int l = 0; l += (movie.Languages.English ? 1 : 0); l += 2 * (movie.Languages.German ? 1 : 0);
+        audiolangs.Value = l;
+        command.Parameters.Add(audiolangs);
+        DbParameter hd = command.CreateParameter();
+        hd.ParameterName = "@hd";
+        hd.Value = movie.Hd;
+        command.Parameters.Add(hd);
+
+        command.ExecuteNonQuery();
+    }
+
 
     public void insert(Movie movie)
     {
         SQLiteCommand command = new SQLiteCommand(m_dbConnection);
 
-        command.CommandText = "INSERT INTO movies(id, title, year, rating, lgenres, ldirectors, lcast, release, plot, poster, runtime, path, audiolangs, hd) VALUES(@id, @title, @year, @rating, @lgenres, @ldirectors, @lcast, @release, @plot, @poster, @runtime, @path, @audiolangs, @hd);";
+        command.CommandText = "INSERT INTO movies(id, title, year, rating, lgenres, ldirectors, lcast, release, plot, poster, runtime, path, audiolangs, hd) VALUES(@id, @title, @year, @rating, @lgenres, @ldirectors, @lcast, @release, @plot, @poster, @runtime, @path, @audiolangs, @hd);"; // TODO: semicolon?
 
         DbParameter id = command.CreateParameter();
         id.ParameterName = "@id";
