@@ -1,0 +1,24 @@
+﻿<Window x:Class="MovieStation.EditProperties"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:MovieStation"
+        Title="EditProperties" Height="169.85" Width="478"
+        ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+    <Canvas>
+        <GroupBox Header="Properties" Height="67" Width="451" Canvas.Top="10" Canvas.Left="10">
+            <Canvas>
+                <CheckBox IsChecked="{Binding SelectedMovie.Languages.German}" IsEnabled="{Binding SelectedMovie, TargetNullValue=False}" Canvas.Left="126" Canvas.Top="14">
+                    <Image Source="/MovieStation;component/Images/de.png" Height="16"/>
+                </CheckBox>
+                <CheckBox IsChecked="{Binding SelectedMovie.Languages.English}" IsEnabled="{Binding SelectedMovie, TargetNullValue=False}" Canvas.Left="60" Canvas.Top="14">
+                    <Image Source="/MovieStation;component/Images/en.png" Height="16"/>
+                </CheckBox>
+                <CheckBox IsChecked="{Binding SelectedMovie.Hd}" IsEnabled="{Binding SelectedMovie, TargetNullValue=False}" Canvas.Left="362" Canvas.Top="14">
+                    <Image Source="/MovieStation;component/Images/hd.png" Height="16"/>
+                </CheckBox>
+            </Canvas>
+        </GroupBox>
+        <Button Content="OK" IsDefault="True" Canvas.Left="82" Canvas.Top="105" Width="287" Click="Button_Click" />
+
+    </Canvas>
+</Window>

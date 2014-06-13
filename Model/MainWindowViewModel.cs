@@ -103,9 +103,10 @@ class MainWindowViewModel : INotifyPropertyChanged
             string dir = Path.GetDirectoryName(oldfile);
             string ext = Path.GetExtension(oldfile);
 
-            ChosenMovie.Path = dir + @"\" + FileRecognizer.memorize(ChosenMovie) + ext;
+//            ChosenMovie.Path = dir + @"\" + FileRecognizer.memorize(ChosenMovie) + ext;
+            ChosenMovie.Path = oldfile;
 
-            File.Move(oldfile, ChosenMovie.Path);
+//            File.Move(oldfile, ChosenMovie.Path);
 
             mdc.mdb.insert(ChosenMovie); // TODO: check for null? / executable
             mf.Close();
