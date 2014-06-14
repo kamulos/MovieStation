@@ -6,7 +6,7 @@ MovieStation allows you to organize your movie collection and search for movies 
 Build MovieStation
 ------------------
 
-Visual Studio 2012 is required to build MovieStation
+The project is made with Visual Studio 2013 & .net 4.5.1.
 
 * Checkout code
 * Download [System.Data.SQLite] (http://system.data.sqlite.org/index.html/doc/trunk/www/downloads.wiki)
