@@ -95,9 +95,9 @@ class MainWindowViewModel : INotifyPropertyChanged
         mf = new MovieFinder();
         mf.Owner = mainWindow;
         mf.DataContext = mainWindow.DataContext;
-        mf.ShowDialog();
+        bool? dialogResult = mf.ShowDialog();
 
-        if (ChosenMovie != null)            // TODO: zum addmovie command oder den addmoviecommand abschaffen??
+        if (dialogResult.HasValue && dialogResult.Value == true && ChosenMovie != null)            // TODO: zum addmovie command oder den addmoviecommand abschaffen??
         {
             string oldfile = CurrentPath;
             string dir = Path.GetDirectoryName(oldfile);
